@@ -24,15 +24,3 @@ jobs:
 
     - name: Push Docker image
       run: docker push kundan554/monitor-app:latest
-
-    - name: SSH Deploy to Server
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          docker pull kundan554/monitor-app:latest
-          docker stop monitor-app || true
-          docker rm monitor-app || true
-          docker run -d -p 5000:5000 --name monitor-app --restart unless-stopped kundan554/monitor-app:latest
